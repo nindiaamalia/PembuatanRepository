@@ -38,62 +38,78 @@
                                     id="floatingTextarea"></textarea>
                                 <label for="floatingTextarea">Alamat</label>
                             </div>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <select class="form-select" name="program" id="floatingSelect"
+                            aria-label="Floating label select example">
+                            <option selected disabled>Pilih</option>
+                            <option value="Junior Web Developer">Junior Web Developer</option>
+                            <option value="Digital Marketing">Digital Marketing</option>
+                            <option value="Content Creator">Content Creator</option>
+                            <option value="Desainer Multimedia Muda">Desainer Multimedia Muda</option>
+                        </select>
+                        <label for="floatingSelect">Program Pelatihan</label>
+                    </div>
 
-                            <div class="form-floating mt-2">
-                                <select class="form-select" name="program" id="floatingSelect"
-                                    aria-label="Floating label select example">
-                                    <option selected disabled>Pilih</option>
-                                    <option value="Junior Web Developer">Junior Web Developer</option>
-                                    <option value="Digital Marketing">Digital Marketing</option>
-                                    <option value="Content Creator">Content Creator</option>
-                                    <option value="Desainer Multimedia Muda">Desainer Multimedia Muda</option>
-                                </select>
-                                <label for="floatingSelect">Program Pelatihan</label>
-                            </div>
-
-                            <div class="form-floating mt-2">
-                                <select class="form-select" name="tahun" id="fsTahun"
-                                    aria-label="Floating label select example">
-                                    <option selected disabled>Pilih Tahun</option>
-                                    <?php
+                    <div class="form-floating mt-2">
+                        <select class="form-select" name="tahun" id="fsTahun"
+                            aria-label="Floating label select example">
+                            <option selected disabled>Pilih Tahun</option>
+                            <?php
                                   for($a=2000;$a<=2023;$a++):?>
-                                    <option value="<?= $a;?>">
-                                        <?= $a;?>
-                                    </option>
-                                    <?php endfor;?>
-                                </select>
-                                <label for="fsTahun">Tahun Daftar</label>
-                            </div>
+                            <option value="<?= $a;?>">
+                                <?= $a;?>
+                            </option>
+                            <?php endfor;?>
+                        </select>
+                        <label for="fsTahun">Tahun Daftar</label>
 
-                            <input type="submit" class="btn btn-success mt-3 col-12" value="Daftar" name="submit">
-                        </form>
                     </div>
-
-                    <div class="card-footer text-center">
-                        <div class="spinner-border text-warning" role="status" style="display:none">
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>Alamat</th>
-                                        <th>Program</th>
-                                        <th>Tahun</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <h5>copyright @2023</h5>
+                    <div class="form-check">
+                        <input value="Laki Laki" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Laki Laki
+                        </label>
                     </div>
-
+                    <div class="form-check">
+                        <input value="Perempuan"class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                            checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Perempuan
+                        </label>
+                    </div>
                 </div>
+
+                <input type="submit" class="btn btn-success mt-3 col-12" value="Daftar" name="submit">
+                </form>
             </div>
+
+            <div class="card-footer text-center">
+                <div class="spinner-border text-warning" role="status" style="display:none">
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Alamat</th>
+                                <th>Program</th>
+                                <th>Tahun</th>
+                                <th>Jenis Kelamin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <h5>copyright @2023</h5>
+            </div>
+
         </div>
+    </div>
+    </div>
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
@@ -109,6 +125,22 @@
     <script>
     //untuk membuat submit form
     $(document).ready(function() {
+        getData();
+
+        function getData() {
+            $.ajax({
+                type: "GET",
+                url: "get_data.php",
+                berforeSend: function(result) {
+                    $(".spinner-border").show();
+                },
+                success: function(result) {
+                    $(".spinner-border").hide();
+                    $("tbody").html(result);
+                    getData();
+                }
+            })
+        }
         //even ketika form disubmit
         $("form").submit(function(event) {
             //
@@ -119,28 +151,31 @@
             var alamat = $("#floatingTextarea").val();
             var program = $("#floatingSelect").val();
             var tahun = $("#fsTahun").val();
+            var gender = $("input[name=flexRadioDefault]:checked").val();
             var formData = {
-                nama:nama,
-                email:email,
-                alamat:alamat,
-                program:program,
-                tahun:tahun
+                nama: nama,
+                email: email,
+                alamat: alamat,
+                program: program,
+                tahun: tahun,
+                gender: gender
             }
             $.ajax({
                 type: "POST",
                 url: "proces.php",
                 data: formData,
                 berforeSend: function(result) {
-                     $(".spinner-border").show()
+                    $(".spinner-border").show()
                 },
                 success: function(result) {
                     // $(".spinner-border").hide()
                     // $("tbody").append(result);
-                    // $("form")[0].reset();
+                    $("form")[0].reset();
                     $("form").trigger("reset");
                 }
             })
         })
+
     })
     </script>
 

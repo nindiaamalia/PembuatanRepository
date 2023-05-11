@@ -1,0 +1,18 @@
+[
+    {
+        "nama": "Nindia Citra Amalia",
+        "email": "nindiaamalia03@gmail.com",
+        "alamat": "bekasi timur",
+        "program": "Junior Web Developer",
+        "tahun": "2022",
+        "gender": "Perempuan"
+    },
+    {
+        "nama": "fatir",
+        "email": "Fatiraa@gmail.com",
+        "alamat": "bojong gede",
+        "program": "Digital Marketing",
+        "tahun": "2021",
+        "gender": "Laki Laki"
+    }
+]
